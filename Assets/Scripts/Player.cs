@@ -1,4 +1,3 @@
-using TMPro;
 using UnityEngine;
 public class Player : MonoBehaviour
 {
@@ -8,9 +7,7 @@ public class Player : MonoBehaviour
         moveAPiece,
         attack,
     }
-    float time = 10;
-    float defTime = 10;
-    bool playerTurn = true;
+    
     new Camera camera;
     GameObject selection;
     public GUISkin skin = null;
@@ -23,92 +20,60 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && playerTurn)
+        if (Input.GetMouseButtonDown(0) &&  TurnManager.playerTurn)
         {
             RaycastHit hit;
             Ray ray = camera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit))
             {
-                action(hit.transform);
+                Action(hit.transform);
             }
         }
         if (Input.GetMouseButtonDown(1))
-            cancelAct();
-        updateTurn();
+            CancelAct();
+        TurnManager.UpdateTurn();
     }
     public void attackMode()
     {
         if (act == actionType.moveAPiece)
+        { 
             act = actionType.attack;
+            selection.GetComponent<PlayerPiece>().DisplayC();
+        }
     }
-    public void endTurn()
+    
+    public void EndTurn()
     {
-
-        playerTurn = false;
-        time = defTime;
+        TurnManager.EndTurn();
     }
-    void updateTurn()
-    {
-        if (time <= 0)
-        {
-            playerTurn = false;
-            time = defTime;
-        }
-        if (playerTurn)
-        {
-            time -= 1 * Time.deltaTime;
-            GameObject.Find("timeDisplay").GetComponent<TMP_Text>().text = "Time: " + ((int)time).ToString();
-        }
-        else
-        {
-            playEnnemyTurn();
-        }
-    }
-    void playEnnemyTurn()
-    {
-        foreach (GameObject enemy in Board.Instance.enemys)
-        {
-            try //TODO remove dead enemy from enemys
-            {
-                enemy.GetComponent<ePiece>().playTurn();
-            }
-            catch
-            {
-            }
-
-        }
-        foreach (GameObject piece in Board.Instance.pieces)
-        {
-            Piece p = piece.GetComponent<Piece>();
-            p.canAttack = true;
-            p.restMovePt();
-        }
-        playerTurn = true;
-    }
-    void cancelAct()
+   
+    void CancelAct()
     {
         if (selection != null && act != actionType.nothing)
-            selection.GetComponent<Piece>().toggleSelect();
+        { 
+            selection.GetComponent<PlayerPiece>().ToggleSelect();
+            selection.GetComponent<PlayerPiece>().ClearDisplay();
+        }
         act = actionType.nothing;
     }
-    void action(Transform objectHit)
+    void Action(Transform objectHit)
     {
-        if (objectHit.tag == "Movables" && act == actionType.nothing)
+        if (objectHit.CompareTag("Movables") && act == actionType.nothing)
         {
             act = actionType.moveAPiece;
             selection = objectHit.gameObject;
-            selection.GetComponent<Piece>().toggleSelect();
+            selection.GetComponent<PlayerPiece>().ToggleSelect();
             
         }
         else if (act == actionType.moveAPiece && objectHit.tag == "cell")
         {
-            selection.GetComponent<Piece>().moveTo(objectHit.gameObject);
-            cancelAct();
+            selection.GetComponent<PlayerPiece>().MoveTo(objectHit.gameObject);
+            CancelAct();
         }
         else if (act == actionType.attack && (objectHit.tag == "cell" || objectHit.tag == "busyCell"))
         {
-            selection.GetComponent<Piece>().attack(objectHit.gameObject);
-            cancelAct();
+            selection.GetComponent<PlayerPiece>().Attack(objectHit.gameObject);
+            CancelAct();
         }
     }
 

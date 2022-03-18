@@ -1,8 +1,9 @@
 using UnityEngine;
 
-public class genMap : MonoBehaviour
+public class GenMap : MonoBehaviour
 {
     public GameObject cell;
+    public GameObject rock;
     GameObject map;
     Vector3 pos;
 
@@ -16,9 +17,13 @@ public class genMap : MonoBehaviour
         {
             for (int j = 0; j < Board.Instance.width; j++)
             {
-                GameObject o = Instantiate(cell, pos, Quaternion.identity, map.transform);
-                o.GetComponent<cell>().x = j;
-                o.GetComponent<cell>().y = i;
+                GameObject o;
+                if (Random.Range(0,5)==4)
+                    o = Instantiate(rock, pos, Quaternion.identity, map.transform);
+                else
+                    o = Instantiate(cell, pos, Quaternion.identity, map.transform);
+                o.GetComponent<Cell>().x = j;
+                o.GetComponent<Cell>().y = i;
                 o.name = j.ToString() + ',' + i.ToString();
                 Board.Instance.cellList[j + i * Board.Instance.width] = o;
                 pos.x += space;
@@ -26,7 +31,7 @@ public class genMap : MonoBehaviour
             pos.x = 0;
             pos.z += space;
         }
-        Board.Instance.enemys[0] = (GameObject)Instantiate(Resources.Load("Prefabs/Enemy"));
-        Board.Instance.pieces[0] = (GameObject)Instantiate(Resources.Load("Prefabs/Piece"));
+        Board.Instance.Enemys.Add((GameObject)Instantiate(Resources.Load("Prefabs/Enemy")));
+        Board.Instance.pieces.Add((GameObject)Instantiate(Resources.Load("Prefabs/Piece")));
     }
 }

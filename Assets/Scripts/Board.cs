@@ -11,7 +11,7 @@ public class Board: Singleton<Board>
     public int height = 10;
     public int nbCell = 100;
     public GameObject[] cellList = new GameObject[100];
-    public GameObject[] enemys = new GameObject[1];
-    public GameObject[] pieces = new GameObject[1];
+    public List<GameObject> Enemys = new List<GameObject> { };
+    public List<GameObject> pieces = new List<GameObject> { };
 }
 

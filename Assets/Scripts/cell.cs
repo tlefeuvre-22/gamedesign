@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class cell : MonoBehaviour
+public class Cell : MonoBehaviour
 {
     private int _x;
     public int x
