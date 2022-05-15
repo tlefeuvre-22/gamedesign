@@ -1,4 +1,4 @@
-# gameDesing
+# game design
 The game is a turn based game.
 Download the game (windows): https://github.com/tlefeuvre-22/gameDesing/releases/download/v0.1/Game.zip
 
