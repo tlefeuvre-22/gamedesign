@@ -5,6 +5,22 @@ test/
 **/main
 **/interface
 
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+[Aa]ssets/AssetStoreTools*
+Library/PackageCache*
+.plastic/
+ignore.conf
+Unity.*
+ProjectSettings*
+Assets/Light.lighting
+Assets/Resources/*
+Assets/Scenes/SampleScene/
 ### Images ###
 *.bmp
 ### VSCode ###

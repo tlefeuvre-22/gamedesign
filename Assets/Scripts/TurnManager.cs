@@ -4,14 +4,13 @@ using UnityEngine;
 
 public static class TurnManager
 {
-    static float time = 10;
-    static readonly float defTime = 10;
+    static float time= 30 * 3;
+    static readonly float defTime = 30*3;
     public static bool playerTurn = true;
     public static void EndTurn()
     {
         playerTurn = false;
         time = defTime;
-        PlayEnnemysAttacks();
     }
     public static bool ChekIfTF()
     {
@@ -31,8 +30,9 @@ public static class TurnManager
             {
                 enemy.GetComponent<EnemyPiece>().PlayTurn();
             }
-            catch
+            catch(Exception e)
             {
+                Debug.Log(e);
             }
         }
         foreach (GameObject piece in Board.Instance.pieces)
@@ -42,20 +42,6 @@ public static class TurnManager
             p.RestMovePt();
         }
         playerTurn = true;
-    }
-    static void PlayEnnemysAttacks()
-    {
-        foreach (GameObject enemy in Board.Instance.Enemys)
-        {
-            try
-            {
-                enemy.GetComponent<EnemyPiece>().Attack();
-            }
-            catch (Exception ex)
-            {
-                Debug.Log(ex);
-            }
-        }
     }
     public static void UpdateTurn()
     {
@@ -73,5 +59,6 @@ public static class TurnManager
             PlayEnnemysTurn();
         }
     }
+
 
 }
